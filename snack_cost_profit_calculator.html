@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>မုန့်ဆိုင် ကုန်ကျစရိတ်နှင့် အမြတ်အစွန်း တွက်ချက်သည့်စနစ်</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #1F2937;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-orange-500 selection:text-white">
+
+    <header class="bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg py-4 px-6 sticky top-0 z-20">
+        <div class="max-w-xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
+                🍔 မုန့်ဆိုင် အမြတ်တွက်စက်
+            </h1>
+            <span class="text-xs bg-white/20 backdrop-blur-md px-3 py-1 rounded-full font-medium">Magway Small Shops</span>
+        </div>
+    </header>
+
+    <main class="max-w-xl w-full mx-auto p-4 sm:p-6 flex-grow">
+        
+        <!-- Selection Section -->
+        <section id="selection-section" class="mb-6 fade-in">
+            <div class="mb-4">
+                <h2 class="text-lg font-bold text-gray-800">မုန့်အမျိုးအစား ရွေးချယ်ပါ</h2>
+                <p class="text-xs text-gray-500 mt-0.5">ကုန်ကျစရိတ်နှင့် အမြတ်အစွန်း တွက်ချက်လိုသော မုန့်ကို နှိပ်ပါ</p>
+            </div>
+            <div id="snack-cards-container" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Calculator Section -->
+        <section id="calculator-section" class="hidden fade-in space-y-5">
+            
+            <!-- Snack Header Banner -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-orange-100 flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-orange-600 font-semibold uppercase tracking-wider">ရွေးချယ်ထားသော မုန့်</span>
+                    <h3 id="current-snack-title" class="text-lg font-bold text-gray-800"></h3>
+                </div>
+                <button onclick="resetToSelection()" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-2 rounded-xl transition font-medium flex items-center gap-1">
+                    ← အခြားပြောင်းရန်
+                </button>
+            </div>
+
+            <!-- Ingredients Card -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-500">ပါဝင်ပစ္စည်းများ ဈေးနှုန်း (ကျပ်)</h3>
+                    <span class="text-xs text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md font-medium">တစ်လုံးစာအတွက်</span>
+                </div>
+                <div id="ingredients-container" class="divide-y divide-gray-100">
+                    <!-- Injected via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Sales Input Card -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                <h3 class="text-sm font-semibold uppercase tracking-wider text-gray-500">ရောင်းအားနှင့် ရောင်းဈေး</h3>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1.5">တစ်လုံး ရောင်းဈေး (Selling Price)</label>
+                        <div class="relative">
+                            <input type="number" id="selling-price" placeholder="ဥပမာ - ၂၅၀၀" class="w-full pl-4 pr-14 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:bg-white outline-none transition text-sm">
+                            <span class="absolute right-3 top-2.5 text-xs text-gray-400 font-medium">ကျပ်</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1.5">ရောင်းရသည့် အရေအတွက် (Quantity)</label>
+                        <div class="relative">
+                            <input type="number" id="quantity-sold" placeholder="ဥပမာ - ၃၀" class="w-full pl-4 pr-16 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:bg-white outline-none transition text-sm">
+                            <span class="absolute right-3 top-2.5 text-xs text-gray-400 font-medium">လုံး/ပွဲ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3 pt-1">
+                <button onclick="calculateProfit()" class="flex-1 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition transform active:scale-95 text-sm flex items-center justify-center gap-2">
+                    🧮 အမြတ်အစွန်း တွက်မည်
+                </button>
+                <button onclick="clearForm()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium py-3 px-4 rounded-xl transition text-sm">
+                    အစကပြန်စ
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div id="result-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl fade-in space-y-5">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    📊 တွက်ချက်မှု ရလဒ်အနှစ်ချုပ်
+                </h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition">
+                    ✕
+                </button>
+            </div>
+
+            <div id="modal-content" class="space-y-3">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="pt-1">
+                <button onclick="closeModal()" class="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-xl font-medium text-sm transition shadow-sm">
+                    ပိတ်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 text-xs text-gray-400 border-t border-gray-100 mt-8">
+        မကွေးမြို့လေးရှိ အစားအသောက်ဆိုင်ပေါက်စများအတွက် ဖန်တီးထားပါသည်။
+    </footer>
+
+    <script>
+        // Snack Database with realistic Myanmar local ingredients and costs
+        const snacksData = [
+            {
+                id: 'chicken-burger',
+                name: 'Chicken Burger',
+                icon: '🍔',
+                ingredients: [
+                    { name: 'ပေါင်မုန့် (Burger Bun)', cost: 300 },
+                    { name: 'ကြက်သားလွှာ / ကြက်ကြော် (Chicken Patty)', cost: 700 },
+                    { name: 'ဒိန်ခဲ (Cheese Slice)', cost: 350 },
+                    { name: 'မေရွန်နိစ် & ဆော့ဖူး (Mayo & Sauce)', cost: 150 },
+                    { name: 'ဟင်းသီးဟင်းရွက် (ဂေါ်ဖီ/ခရမ်းချဉ်)', cost: 100 }
+                ]
+            },
+            {
+                id: 'beef-burger',
+                name: 'Beef Burger',
+                icon: '🍔',
+                ingredients: [
+                    { name: 'ပေါင်မုန့် (Burger Bun)', cost: 300 },
+                    { name: 'အမဲသားလွှာ (Beef Patty)', cost: 900 },
+                    { name: 'ဒိန်ခဲ (Cheese Slice)', cost: 350 },
+                    { name: 'ဘာဂါဆော့ဖူး (Special Sauce)', cost: 150 },
+                    { name: 'ဟင်းသီးဟင်းရွက် (ကြက်သွန်/ခရမ်းချဉ်)', cost: 100 }
+                ]
+            },
+            {
+                id: 'sandwich',
+                name: 'Sandwich',
+                icon: '🥪',
+                ingredients: [
+                    { name: 'ပေါင်မုန့်ချပ် (Bread Slices)', cost: 250 },
+                    { name: 'ဟမ်းဟမ် / ကြက်သားလွှာ (Ham/Chicken)', cost: 400 },
+                    { name: 'ဥပြုတ် (Boiled Egg)', cost: 200 },
+                    { name: 'မေရွန်နိစ် & သခွားသီး', cost: 150 }
+                ]
+            },
+            {
+                id: 'hot-dog',
+                name: 'Hot Dog',
+                icon: '🌭',
+                ingredients: [
+                    { name: 'ဟော့ဒေါ့ပေါင်မုန့်ရှည် (Hot Dog Bun)', cost: 300 },
+                    { name: 'ဝက်/ကြက်အူချောင်း (Sausage)', cost: 400 },
+                    { name: 'ခရမ်းချဉ်သီးဆော့ဖူး & မေရွန်နိစ်', cost: 100 },
+                    { name: 'မုန်လာဥနီ/ဂေါ်ဖီသုပ် (Coleslaw)', cost: 100 }
+                ]
+            },
+            {
+                id: 'sushi-roll',
+                name: 'ရေညှိထမင်းလိပ်',
+                icon: '🫔',
+                ingredients: [
+                    { name: 'ထမင်း (Cooked Rice)', cost: 150 },
+                    { name: 'ရေညှိရွက် (Nori sheet)', cost: 200 },
+                    { name: 'ဂဏန်းတိုကျာ / အူချောင်း', cost: 300 },
+                    { name: 'သခွားသီး / မေရွန်နိစ်', cost: 150 }
+                ]
+            }
+        ];
+
+        let selectedSnack = null;
+
+        window.onload = function() {
+            renderSnackCards();
+        };
+
+        // Render snack selection cards
+        function renderSnackCards() {
+            const container = document.getElementById('snack-cards-container');
+            container.innerHTML = '';
+
+            snacksData.forEach(snack => {
+                const card = document.createElement('div');
+                card.className = "bg-white hover:bg-orange-50/60 border border-gray-100 hover:border-orange-300 p-4 rounded-2xl shadow-sm cursor-pointer transition flex flex-col items-center text-center gap-2 group";
+                card.onclick = () => selectSnack(snack);
+                
+                card.innerHTML = `
+                    <span class="text-3xl group-hover:scale-110 transition transform duration-200">${snack.icon}</span>
+                    <span class="font-semibold text-sm text-gray-800">${snack.name}</span>
+                    <span class="text-xs text-orange-600 font-medium opacity-0 group-hover:opacity-100 transition duration-200">တွက်ချက်မည် →</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Select a specific snack
+        function selectSnack(snack) {
+            selectedSnack = snack;
+            document.getElementById('selection-section').classList.add('hidden');
+            document.getElementById('calculator-section').classList.remove('hidden');
+            document.getElementById('current-snack-title').innerText = `${snack.icon} ${snack.name}`;
+            
+            renderIngredients();
+            document.getElementById('selling-price').value = '';
+            document.getElementById('quantity-sold').value = '';
+        }
+
+        // Render dynamic ingredients list
+        function renderIngredients() {
+            const container = document.getElementById('ingredients-container');
+            container.innerHTML = '';
+
+            selectedSnack.ingredients.forEach((ing, index) => {
+                const row = document.createElement('div');
+                row.className = "py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5";
+                
+                row.innerHTML = `
+                    <span class="text-sm font-medium text-gray-700">${ing.name}</span>
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-grow sm:flex-grow-0">
+                            <input type="number" id="ing-cost-${index}" value="${ing.cost}" class="w-full sm:w-28 pl-3 pr-10 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+                            <span class="absolute right-2.5 top-2 text-xs text-gray-400">ကျပ်</span>
+                        </div>
+                        <button id="toggle-btn-${index}" onclick="toggleIngredient(${index})" class="text-xs px-3 py-2 rounded-xl border font-medium transition bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 whitespace-nowrap">
+                            ပါဝင်ပါသည်
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Toggle ingredient inclusion
+        function toggleIngredient(index) {
+            const input = document.getElementById(`ing-cost-${index}`);
+            const btn = document.getElementById(`toggle-btn-${index}`);
+            
+            if (!input.disabled) {
+                input.dataset.prevValue = input.value;
+                input.value = 0;
+                input.disabled = true;
+                input.classList.add('bg-gray-100', 'text-gray-400');
+                btn.className = "text-xs px-3 py-2 rounded-xl border font-medium transition bg-red-50 text-red-600 border-red-200 whitespace-nowrap";
+                btn.innerText = "မပါဝင်ပါ";
+            } else {
+                input.value = input.dataset.prevValue || 100;
+                input.disabled = false;
+                input.classList.remove('bg-gray-100', 'text-gray-400');
+                btn.className = "text-xs px-3 py-2 rounded-xl border font-medium transition bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 whitespace-nowrap";
+                btn.innerText = "ပါဝင်ပါသည်";
+            }
+        }
+
+        // Return to menu selection
+        function resetToSelection() {
+            document.getElementById('calculator-section').classList.add('hidden');
+            document.getElementById('selection-section').classList.remove('hidden');
+            selectedSnack = null;
+        }
+
+        // Clear input form
+        function clearForm() {
+            renderIngredients();
+            document.getElementById('selling-price').value = '';
+            document.getElementById('quantity-sold').value = '';
+        }
+
+        // Calculate profit and revenue
+        function calculateProfit() {
+            if (!selectedSnack) return;
+
+            let totalCostPerUnit = 0;
+            selectedSnack.ingredients.forEach((ing, index) => {
+                const input = document.getElementById(`ing-cost-${index}`);
+                if (!input.disabled) {
+                    totalCostPerUnit += parseFloat(input.value) || 0;
+                }
+            });
+
+            const sellingPrice = parseFloat(document.getElementById('selling-price').value) || 0;
+            const quantitySold = parseFloat(document.getElementById('quantity-sold').value) || 0;
+
+            if (sellingPrice <= 0) {
+                showAlert("ကျေးဇူးပြု၍ တစ်လုံးရောင်းဈေး မှန်ကန်စွာ ထည့်သွင်းပါ။");
+                return;
+            }
+
+            const profitPerUnit = sellingPrice - totalCostPerUnit;
+            const totalRevenue = sellingPrice * quantitySold;
+            const netProfit = profitPerUnit * quantitySold;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="bg-orange-50/70 p-4 rounded-2xl border border-orange-100 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">မုန့်တစ်လုံး ကုန်ကျစရိတ်:</span>
+                        <span class="font-bold text-gray-800">${totalCostPerUnit.toLocaleString()} ကျပ်</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">တစ်လုံးမြတ်စွန်းငွေ:</span>
+                        <span class="font-bold ${profitPerUnit >= 0 ? 'text-green-600' : 'text-red-600'}">${profitPerUnit.toLocaleString()} ကျပ်</span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">ရောင်းရသည့် အရေအတွက်:</span>
+                        <span class="font-semibold text-gray-800">${quantitySold} လုံး / ပွဲ</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">စုစုပေါင်း ရောင်းရငွေ (Revenue):</span>
+                        <span class="font-bold text-gray-800">${totalRevenue.toLocaleString()} ကျပ်</span>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-orange-600 to-amber-600 text-white p-4 rounded-2xl shadow-md flex justify-between items-center">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider opacity-90 block">✨ သန့်စင်သော အမြတ်ငွေ</span>
+                        <span class="text-xl font-extrabold">${netProfit.toLocaleString()} ကျပ်</span>
+                    </div>
+                    <span class="text-3xl">💰</span>
+                </div>
+            `;
+
+            document.getElementById('result-modal').classList.remove('hidden');
+        }
+
+        function showAlert(msg) {
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="p-4 bg-amber-50 text-amber-800 rounded-2xl text-sm font-medium text-center border border-amber-200">
+                    ⚠️ ${msg}
+                </div>
+            `;
+            document.getElementById('result-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
